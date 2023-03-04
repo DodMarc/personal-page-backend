@@ -4,6 +4,7 @@ import FastifyCors from '@fastify/cors'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import { fastifyStatic } from '@fastify/static'
+import fastifyIo from 'fastify-socket.io'
 
 import path from 'path'
 import GuildwarsRoute from './routes/guildwars/guildwars.js'
@@ -26,6 +27,12 @@ export const createFastify = async () => {
     await server.register(fastifyStatic, {
         root: path.resolve("./dist"),
         prefix: '/'
+    })
+
+    await server.register(fastifyIo, {
+        cors: {
+            origin: '*'
+        }
     })
 
     await server.register(async (fastify) => {

@@ -1,5 +1,6 @@
 import { Log } from "./logger.js";
 import { createFastify } from "./server.js";
+import { initWebsocket } from "./websocket.js";
 
 process.on('uncaughtException', err => Log.error(err))
 process.on('unhandledRejection', err => Log.error(err))
@@ -7,8 +8,11 @@ process.on('unhandledRejection', err => Log.error(err))
 // run server
 try {
     const server = await createFastify()
-    
+
     await server.ready()
+
+    initWebsocket(server);
+
     const port = 3000
     await server.listen({
         port,
